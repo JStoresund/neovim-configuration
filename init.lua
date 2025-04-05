@@ -180,10 +180,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use hjkl to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use hjkl to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use hjkl to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use hjkl to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -889,25 +889,6 @@ require('lazy').setup({
     end,
   },
 
-  {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('lualine').setup {
-        opts = {
-          theme = 'one_monokai',
-        },
-      }
-    end,
-  },
-
-  {
-    'cpea2506/one_monokai.nvim',
-    opts = {
-      colorscheme = 'one_monokai',
-    },
-  },
-
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -974,6 +955,34 @@ require('lazy').setup({
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
 
+  -- NOTE: Following are Johan's added plugins
+
+  {
+    'cpea2506/one_monokai.nvim',
+    opts = {
+      colorscheme = 'one_monokai',
+    },
+  },
+
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('lualine').setup {
+        opts = {
+          theme = 'one_monokai',
+        },
+      }
+    end,
+  },
+
+  {
+    'nvim-tree/nvim-tree.lua',
+    config = function()
+      require('nvim-tree').setup {}
+    end,
+  },
+
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
@@ -994,7 +1003,7 @@ require('lazy').setup({
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
