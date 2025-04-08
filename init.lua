@@ -124,7 +124,13 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
-vim.keymap.set('n', '<leader>e', '<cmd>:NvimTreeToggle<CR>', { desc = 'Toggling file tree' })
+-- Johan's self-made keymaps
+
+vim.keymap.set('n', '<leader>e', '<cmd>:NvimTreeToggle<CR>', { desc = 'Toggle file tree' })
+
+vim.api.nvim_set_keymap('n', '<leader>n', ':ASToggle<CR>', { desc = 'Toggle autosave' })
+
+vim.keymap.set('n', '<leader>co', '<cmd>:Copilot setup<CR>', { desc = 'Setup copilot' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -926,10 +932,14 @@ require('lazy').setup({
           group_empty = true,
         },
         filters = {
-          dotfiles = true,
+          dotfiles = false,
         },
       }
     end,
+  },
+
+  {
+    'pocco81/auto-save.nvim',
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
@@ -986,4 +996,5 @@ require('lazy').setup({
 })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
+
 -- vim: ts=2 sts=2 sw=2 et
