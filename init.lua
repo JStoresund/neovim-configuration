@@ -1,18 +1,18 @@
 --[[
 
-  JStoresund's neovim configuration file, based on Kickstart
+JStoresund's neovim configuration file, based on Kickstart
 
-  NOTE: Some documentation on lua
-    - https://learnxinyminutes.com/docs/lua/
-    - :help lua-guide
-    - (or HTML version): https://neovim.io/doc/user/lua-guide.html
+NOTE: Some documentation on lua
+  - https://learnxinyminutes.com/docs/lua/
+  - :help lua-guide
+  - (or HTML version): https://neovim.io/doc/user/lua-guide.html
 
-  NOTE: Some useful tips and commands in case you are stuck
-    - Read `:help` for general information on usage
-    - Use keymap "<leader>sh" to [s]earch the [h]elp documentation
-    - Use `:help x` for help about specific functionality
+NOTE: Some useful tips and commands in case you are stuck
+  - Read `:help` for general information on usage
+  - Use keymap "<leader>sh" to [s]earch the [h]elp documentation
+  - Use `:help x` for help about specific functionality
 
-  NOTE: Please star my repository (https://github.com/JStoresund/neovim-configuration)
+NOTE: Please star my repository (https://github.com/JStoresund/neovim-configuration)
 
 -]]
 
@@ -99,7 +99,7 @@ vim.opt.confirm = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>ql', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix [L]ist' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -126,11 +126,11 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 -- Johan's self-made keymaps
 
-vim.keymap.set('n', '<leader>e', '<cmd>:NvimTreeToggle<CR>', { desc = 'Toggle file tree' })
+vim.keymap.set('n', '<leader>e', '<cmd>:NvimTreeToggle<CR>', { desc = 'Toggle file [TR]ee' })
 
-vim.api.nvim_set_keymap('n', '<leader>n', ':ASToggle<CR>', { desc = 'Toggle autosave' })
+vim.api.nvim_set_keymap('n', '<leader>Tas', ':ASToggle<CR>', { desc = '[T]oggle [A]uto[S]ave' })
 
-vim.keymap.set('n', '<leader>co', '<cmd>:Copilot setup<CR>', { desc = 'Setup copilot' })
+vim.keymap.set('n', '<leader>Sco', '<cmd>:Copilot setup<CR>', { desc = '[S]etup [CO]pilot' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -365,7 +365,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-      vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch existing [B]uffers' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -674,12 +674,12 @@ require('lazy').setup({
     cmd = { 'ConformInfo' },
     keys = {
       {
-        '<leader>f',
+        '<leader>FB',
         function()
           require('conform').format { async = true, lsp_format = 'fallback' }
         end,
         mode = '',
-        desc = '[F]ormat buffer',
+        desc = '[F]ormat [B]uffer',
       },
     },
     opts = {
@@ -896,6 +896,15 @@ require('lazy').setup({
   },
 
   -- NOTE: Following are Johan's added plugins
+
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    ft = { 'markdown' },
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
+  },
 
   {
     'cpea2506/one_monokai.nvim',
