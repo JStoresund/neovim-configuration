@@ -40,6 +40,8 @@ vim.opt.mouse = 'a'
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
+vim.opt.laststatus = 3
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -126,11 +128,11 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 -- Johan's self-made keymaps
 
+vim.keymap.set('n', '<leader>Tm', '<cmd>:MarkdownPreviewToggle<CR>', { desc = '[T]oggle [m]arkdown preview' })
+
 vim.keymap.set('n', '<leader>e', '<cmd>:NvimTreeToggle<CR>', { desc = 'Toggle file [TR]ee' })
 
 vim.api.nvim_set_keymap('n', '<leader>Tas', ':ASToggle<CR>', { desc = '[T]oggle [A]uto[S]ave' })
-
-vim.keymap.set('n', '<leader>Sco', '<cmd>:Copilot setup<CR>', { desc = '[S]etup [CO]pilot' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -364,7 +366,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-      vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+      vim.keymap.set('n', '<C-å>', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch existing [B]uffers' })
 
       -- Slightly advanced example of overriding default behavior and theme
@@ -679,7 +681,7 @@ require('lazy').setup({
           require('conform').format { async = true, lsp_format = 'fallback' }
         end,
         mode = '',
-        desc = '[F]ormat [B]uffer',
+        { desc = '[F]ormat [B]uffer' },
       },
     },
     opts = {
@@ -904,6 +906,22 @@ require('lazy').setup({
     build = function()
       vim.fn['mkdp#util#install']()
     end,
+    config = function()
+      vim.g.mkdp_auto_start = 0
+      vim.g.mkdp_auto_close = 1
+      vim.g.mkdp_refresh_slow = 0
+      vim.g.mkdp_open_to_the_world = 0
+      vim.g.mkdp_open_ip = ''
+      vim.g.mkdp_port = ''
+      vim.g.mkdp_browser = 'firefox'
+      vim.g.mkdp_echo_preview_url = 1
+      vim.g.mkdp_browserfunc = ''
+      vim.g.mkdp_page_title = '${name} preview'
+      vim.g.mkdp_filetypes = { 'markdown' }
+      vim.g.mkdp_theme = 'dark'
+      vim.g.mkdp_combine_preview = 0
+      vim.g.mkdp_combine_preview_auto_refresh = 1
+    end,
   },
 
   {
@@ -913,6 +931,99 @@ require('lazy').setup({
     },
   },
 
+  -- {
+  --   'yetone/avante.nvim',
+  --   event = 'VeryLazy',
+  --   version = false, -- Never set this value to "*"! Never!
+  --   opts = {
+  --     -- add any opts here
+  --     -- for example
+  --     provider = 'claude',
+  --     cursor_applying_provider = 'groq',
+  --     behaviour = {
+  --       enable_cursor_planning_mode = true,
+  --     },
+  --     vendors = {
+  --       groq = {
+  --         __inherited_from = 'openai',
+  --         endpoint = 'https://api.groq.com/openai/v1',
+  --         api_key_name = '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',
+  --         model = 'llama-3.3-70b-versatile', -- your desired model (or use gpt-4o, etc.)
+  --         timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
+  --         max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
+  --         --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+  --       },
+  --     },
+  --   },
+  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  --   build = 'make',
+  --   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+  --   dependencies = {
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'stevearc/dressing.nvim',
+  --     'nvim-lua/plenary.nvim',
+  --     'MunifTanjim/nui.nvim',
+  --     --- The below dependencies are optional,
+  --     'echasnovski/mini.pick', -- for file_selector provider mini.pick
+  --     'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
+  --     'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
+  --     'ibhagwan/fzf-lua', -- for file_selector provider fzf
+  --     'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+  --     'zbirenbaum/copilot.lua', -- for providers='copilot'
+  --     {
+  --       -- support for image pasting
+  --       'HakonHarnes/img-clip.nvim',
+  --       event = 'VeryLazy',
+  --       opts = {
+  --         -- recommended settings
+  --         default = {
+  --           embed_image_as_base64 = false,
+  --           prompt_for_file_name = false,
+  --           drag_and_drop = {
+  --             insert_mode = true,
+  --           },
+  --           -- required for Windows users
+  --           use_absolute_path = true,
+  --         },
+  --       },
+  --     },
+  --     {
+  --       -- Make sure to set this up properly if you have lazy=true
+  --       'MeanderingProgrammer/render-markdown.nvim',
+  --       opts = {
+  --         file_types = { 'markdown', 'Avante' },
+  --       },
+  --       ft = { 'markdown', 'Avante' },
+  --     },
+  --   },
+  -- },
+
+  {
+    'nvim-lua/plenary.nvim',
+    lazy = true,
+  },
+
+  {
+    'nvim-tree/nvim-web-devicons',
+    lazy = true,
+  },
+
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    event = 'BufReadPost',
+    config = function()
+      require('treesitter-context').setup {
+        enable = true,
+        max_lines = 0,
+        min_window_height = 0,
+        trim_scope = 'outer',
+        mode = 'cursor',
+        zindex = 20,
+        multiline_threshold = 20,
+        line_numbers = false,
+      }
+    end,
+  },
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -936,13 +1047,13 @@ require('lazy').setup({
           sorter = 'case_sensitive',
         },
         view = {
-          width = 40,
+          width = 35,
         },
         renderer = {
           group_empty = true,
         },
         filters = {
-          dotfiles = false,
+          dotfiles = true,
         },
       }
     end,
